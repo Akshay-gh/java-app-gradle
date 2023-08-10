@@ -15,16 +15,15 @@ pipeline {
                 }
             }
         }
+    }
 
-        post{
-
-            success{
+    post{
+        success{
                 echo "=============== Pipeline Executed successfully ====================="
             }
 
-            failure{
+        failure{
                 echo "================= Pipeline execution failed ========================"
             }
         }
-    }
 }
