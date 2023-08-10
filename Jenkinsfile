@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment{
-        VERSION = "{env.BUILD_ID}"
+        VERSION = "${env.BUILD_ID}"
     }
     stages{
         stage("Sonar Quality Check"){
@@ -20,9 +20,25 @@ pipeline {
                 }
             }
         }
-
     }
-    post{ // last part
+    // Seperate Stage for Docker file multi-stage, it is building image and pushing it to Nexus repo
+    stage{
+        steps{
+            script{
+                withCredentials([string(credentialsId: 'nexus_pass', variable: 'docker_password')]) {
+                sh ```
+                    docker build -t 192.168.56.103:8083/javawebapp:${VERSION} .
+                    docker login -u admin -p $nexus_pass 192.168.56.103:8083
+                    docker push 192.168.56.103:8083/javawebapp:${VERSION}
+                    docekr rmi 192.168.56.103:8083/javawebapp:${VERSION}
+                ```
+                }
+
+            }
+        }
+    }
+    // last part
+    post{ 
         success{
             echo "=== Executed successfully =="
         }
