@@ -22,7 +22,7 @@ pipeline {
         }
     }
     // Seperate Stage for Docker file multi-stage, it is building image and pushing it to Nexus repo
-    stage{
+    stage("Build Docker images and push to Nexus"){
         steps{
             script{
                 withCredentials([string(credentialsId: 'nexus_pass', variable: 'nexus_pass_var')]) {
