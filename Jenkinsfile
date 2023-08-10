@@ -20,7 +20,7 @@ pipeline {
                 }
             }
         }
-    }
+    
     // Seperate Stage for Docker file multi-stage, it is building image and pushing it to Nexus repo
     stage("Build Docker images and push to Nexus"){
         steps{
@@ -36,6 +36,7 @@ pipeline {
 
             }
         }
+    }
     }
     // last part
     post{ 
